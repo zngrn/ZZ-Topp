@@ -26,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 mediaPlayer.start();
                 Toast.makeText(MainActivity.this, "Play", Toast.LENGTH_SHORT).show();
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        Toast.makeText(MainActivity.this, "Done Playing", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
