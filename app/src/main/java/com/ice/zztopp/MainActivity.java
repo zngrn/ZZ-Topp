@@ -11,6 +11,14 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
 
+    private MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            releaseMediaPlayer();
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,23 +32,29 @@ public class MainActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                releaseMediaPlayer();
                 mediaPlayer.start();
                 Toast.makeText(MainActivity.this, "Play", Toast.LENGTH_SHORT).show();
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        Toast.makeText(MainActivity.this, "Done Playing", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                mediaPlayer.setOnCompletionListener(onCompletionListener);
             }
         });
 
         pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+
+                releaseMediaPlayer();
+
                 mediaPlayer.pause();
                 Toast.makeText(MainActivity.this, "Pause", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void releaseMediaPlayer() {
+        if(mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+        mediaPlayer = null;
     }
 }
